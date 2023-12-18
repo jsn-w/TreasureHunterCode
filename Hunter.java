@@ -105,6 +105,14 @@ public class Hunter {
         return false;
     }
 
+    public void addAll(){
+        kit[0] = "water";
+        kit[1] = "rope";
+        kit[2] = "machete";
+        kit[3] = "horse";
+        kit[4] = "boat";
+    }
+
     /**
      * Checks if the kit Array has the specified item.
      *
