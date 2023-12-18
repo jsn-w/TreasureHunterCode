@@ -139,13 +139,13 @@ public class Hunter {
     public String getInventory() {
         String printableKit = "";
         String space = " ";
-
+        printableKit += Colors.PURPLE;
         for (String item : kit) {
             if (item != null) {
                 printableKit += item + space;
             }
         }
-
+        printableKit += Colors.RESET;
         return printableKit;
     }
 
@@ -153,7 +153,7 @@ public class Hunter {
      * @return A string representation of the hunter.
      */
     public String toString() {
-        String str = hunterName + " has " + gold + " gold";
+        String str = hunterName + " has " + gold + Colors.YELLOW + " gold" + Colors.RESET;
         if (!kitIsEmpty()) {
             str += " and " + getInventory();
         }
