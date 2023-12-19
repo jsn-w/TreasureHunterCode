@@ -116,10 +116,10 @@ public class Town {
     }
 
     public void digForGold() {
-        if (!hunter.hasItemInKit("shovel")) {
-            System.out.println("You can't dig for gold without a shovel");
-        } else if (dugBefore) {
+        if (dugBefore) {
             System.out.println("You already dug for gold in this town");
+        } else if (!hunter.hasItemInKit("shovel")) {
+            System.out.println("You can't dig for gold without a shovel");
         } else if (Math.random() > 0.5) {
                 int dugUp = (int) (Math.random() * 20) + 1;
                 System.out.println("You dug up " + Colors.YELLOW + dugUp + " gold!" + Colors.RESET);
