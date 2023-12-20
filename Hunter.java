@@ -8,6 +8,7 @@ public class Hunter {
     //instance variables
     private String hunterName;
     private String[] kit;
+    private String[] treasureFound;
     private int gold;
 
     /**
@@ -19,6 +20,7 @@ public class Hunter {
     public Hunter(String hunterName, int startingGold) {
         this.hunterName = hunterName;
         kit = new String[6];
+        treasureFound = new String[4];
         gold = startingGold;
     }
 
@@ -38,7 +40,7 @@ public class Hunter {
             String printMessage = "";
             printMessage = Colors.RED;
             printMessage += "That'll teach you to go lookin' fer trouble in MY town! Now pay up!";
-            printMessage += "\nYou lost the brawl and pay " + modifier + " gold.";
+            printMessage += "\nYou lost the brawl and pay " + -modifier + " gold.";
             System.out.println(printMessage);
             printMessage += Colors.RESET;
             TreasureHunter.setGameOver();
@@ -112,6 +114,16 @@ public class Hunter {
         return false;
     }
 
+    public void addTreasure(String treasure) {
+        if (!(treasure.equals("dust") || treasure.equals("N/A"))){
+            if (findItemInKit(treasure) == -1){
+                int idx = emptyTreasure();
+                treasureFound[idx] = treasure;
+            }
+            System.out.println("You have already found this treasure!");
+        }
+    }
+
     public void addAll(){
         kit[0] = "water";
         kit[1] = "rope";
@@ -183,6 +195,25 @@ public class Hunter {
             }
         }
 
+        return -1;
+    }
+
+    private int findTreasure(String treasure){
+        for (int i = 0; i < treasureFound.length; i++) {
+            String tmpItem = treasureFound[i];
+            if (treasure.equals(tmpItem)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int emptyTreasure(){
+        for (int i = 0; i < treasureFound.length; i++) {
+            if (treasureFound[i] == null) {
+                return i;
+            }
+        }
         return -1;
     }
 
