@@ -121,12 +121,13 @@ public class Town {
         } else if (!hunter.hasItemInKit("shovel")) {
             System.out.println("You can't dig for gold without a shovel");
         } else if (Math.random() > 0.5) {
-                int dugUp = (int) (Math.random() * 20) + 1;
-                System.out.println("You dug up " + Colors.YELLOW + dugUp + " gold!" + Colors.RESET);
-            } else {
-                System.out.println("You dug but only found dirt");
-            }
+            int dugUp = (int) (Math.random() * 20) + 1;
+            System.out.println("You dug up " + Colors.YELLOW + dugUp + " gold!" + Colors.RESET);
+            dugBefore = true;
+        } else {
+            System.out.println("You dug but only found dirt");
         }
+    }
 
     public String toString() {
         return "This nice little town is surrounded by " + terrain.getTerrainName() + ".";
@@ -138,18 +139,20 @@ public class Town {
      * @return A Terrain object.
      */
     private Terrain getNewTerrain() {
-        double rnd = Math.random();
+        int rnd = (int) (Math.random() * 6);
         dugBefore = false;
-        if (rnd < .2) {
+        if (rnd == 0) {
             return new Terrain("Mountains", "Rope");
-        } else if (rnd < .4) {
+        } else if (rnd == 1) {
             return new Terrain("Ocean", "Boat");
-        } else if (rnd < .6) {
+        } else if (rnd == 2) {
             return new Terrain("Plains", "Horse");
-        } else if (rnd < .8) {
+        } else if (rnd == 3) {
             return new Terrain("Desert", "Water");
-        } else {
+        } else if (rnd == 4) {
             return new Terrain("Jungle", "Machete");
+        } else {
+            return new Terrain("Marsh", "Boots");
         }
     }
 
