@@ -35,7 +35,14 @@ public class Hunter {
     public void changeGold(int modifier) {
         gold += modifier;
         if (gold < 0) {
-            gold = 0;
+            String printMessage = "";
+            printMessage = Colors.RED;
+            printMessage += "That'll teach you to go lookin' fer trouble in MY town! Now pay up!";
+            printMessage += "\nYou lost the brawl and pay " + modifier + " gold.";
+            System.out.println(printMessage);
+            printMessage += Colors.RESET;
+            TreasureHunter.setGameOver();
+            System.out.println("\nYou lost the brawl and died from a debt of " + -gold +  " gold");
         }
     }
 
