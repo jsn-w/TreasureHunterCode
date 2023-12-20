@@ -15,8 +15,6 @@ public class TreasureHunter {
     // instance variables
     private Town currentTown;
     private Hunter hunter;
-    private boolean easyMode;
-    private boolean normalMode;
     private boolean hardMode;
     private boolean testMode;
 
@@ -49,17 +47,13 @@ public class TreasureHunter {
         String name = SCANNER.nextLine().toLowerCase();
 
         // set hunter instance variable
-        hunter = new Hunter(name, 0);
+        hunter = new Hunter(name, 10);
 
-        System.out.print("(E)asy, (N)ormal, or (H)ard mode: ");
-        String modeOption = SCANNER.nextLine().toLowerCase();
-        if (modeOption.equals("e")) {
-            easyMode = true;
-        } else if (modeOption.equals("n")) {
-            normalMode = true;
-        } else if (modeOption.equals("h")) {
+        System.out.print("Hard mode? (y/n): ");
+        String hard = SCANNER.nextLine().toLowerCase();
+        if (hard.equals("y")) {
             hardMode = true;
-        } else if (modeOption.equals("test")){
+        } else if (hard.equals("test")){
             testMode = true;
         }
     }
@@ -68,22 +62,16 @@ public class TreasureHunter {
      * Creates a new town and adds the Hunter to it.
      */
     private void enterTown() {
-        double markdown = 0;
-        double toughness = 1;
-        if (easyMode) {
-            markdown = 1;
-            toughness = 0.25;
-            hunter.changeGold(20);
-        } else if (normalMode) {
+        double markdown = 0.25;
+        double toughness = 0.4;
+        if (hardMode) {
+            // in hard mode, you get less money back when you sell items
             markdown = 0.5;
-            toughness = 0.5;
-            hunter.changeGold(15);
-        } else if (hardMode) {
-            markdown = 0.25;
+
+            // and the town is "tougher"
             toughness = 0.75;
-            hunter.changeGold(10);
         } else if (testMode){
-            hunter.changeGold(100);
+            hunter.changeGold(90);
             hunter.addAll();
         }
 
