@@ -17,7 +17,6 @@ public class TreasureHunter {
     private Hunter hunter;
     private boolean hardMode;
     private boolean testMode;
-    private static boolean gameOver;
 
     /**
      * Constructs the Treasure Hunter game.
@@ -27,7 +26,6 @@ public class TreasureHunter {
         currentTown = null;
         hunter = null;
         hardMode = false;
-        gameOver = false;
     }
 
     /**
@@ -64,11 +62,11 @@ public class TreasureHunter {
      * Creates a new town and adds the Hunter to it.
      */
     private void enterTown() {
-        double markdown = 0.5;
+        double markdown = 0.25;
         double toughness = 0.4;
         if (hardMode) {
             // in hard mode, you get less money back when you sell items
-            markdown = 0.25;
+            markdown = 0.5;
 
             // and the town is "tougher"
             toughness = 0.75;
@@ -102,7 +100,7 @@ public class TreasureHunter {
     private void showMenu() {
         String choice = "";
 
-        while (!choice.equals("x") && !gameOver) {
+        while (!choice.equals("x")) {
             System.out.println();
             System.out.println(currentTown.getLatestNews());
             System.out.println("***");
@@ -147,9 +145,5 @@ public class TreasureHunter {
         else {
             System.out.println("Yikes! That's an invalid option! Try again.");
         }
-    }
-
-    public static void setGameOver(){
-        gameOver = true;
     }
 }

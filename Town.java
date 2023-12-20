@@ -10,6 +10,7 @@ public class Town {
     private Shop shop;
     private Terrain terrain;
     private String printMessage;
+    private double toughness;
     private boolean toughTown;
     private boolean dugBefore = false;
     private boolean treasureSearched = false;
@@ -26,6 +27,7 @@ public class Town {
     public Town(Shop shop, double toughness) {
         this.shop = shop;
         this.terrain = getNewTerrain();
+        this.toughness = toughness;
 
         // the hunter gets set using the hunterArrives method, which
         // gets called from a client class
@@ -111,7 +113,15 @@ public class Town {
             printMessage = Colors.RED;
             printMessage += "You want trouble, stranger!  You got it!\nOof! Umph! Ow!\n";
             int goldDiff = (int) (Math.random() * 10) + 1;
-            if (Math.random() > noTroubleChance) {
+            double chance = 0;
+            if (toughness == 0.25) {
+                chance = Math.random() * 1.5;
+            } else if (toughness == 0.5) {
+                chance = Math.random();
+            } else if (toughness == 0.75) {
+                chance = Math.random() * 0.5;
+            }
+            if (chance > Math.random()) {
                 printMessage += "Okay, stranger! You proved yer mettle. Here, take my gold.";
                 printMessage += "\nYou won the brawl and receive " + Colors.YELLOW + goldDiff + Colors.RESET + " gold.";
                 hunter.changeGold(goldDiff);
@@ -186,6 +196,9 @@ public class Town {
      */
     private boolean checkItemBreak() {
         double rand = Math.random();
+        if (toughness == 0.25) {
+            return false;
+        }
         return (rand < 0.5);
     }
 }
