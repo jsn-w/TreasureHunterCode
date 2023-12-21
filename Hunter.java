@@ -119,8 +119,9 @@ public class Hunter {
             if (findItemInKit(treasure) == -1){
                 int idx = emptyTreasure();
                 treasureFound[idx] = treasure;
+            } else {
+                System.out.println("You have already found this treasure!");
             }
-            System.out.println("You have already found this treasure!");
         }
     }
 

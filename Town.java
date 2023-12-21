@@ -185,6 +185,8 @@ public class Town {
                 System.out.println("You found a " + treasure);
                 return treasure;
             }
+        } else {
+            System.out.println("This town has already been searched");
         }
         return "N/A";
     }
