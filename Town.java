@@ -16,18 +16,19 @@ public class Town {
     private boolean treasureSearched = false;
     private String[] treasures = {"dust", "gem", "crown", "trophy"};
     private String treasure;
+    private String mode;
 
 
     /**
      * The Town Constructor takes in a shop and the surrounding terrain, but leaves the hunter as null until one arrives.
      *
      * @param shop The town's shoppe.
-     * @param toughness The surrounding terrain.
+     * @param mode Mode of game.
      */
-    public Town(Shop shop, double toughness) {
+    public Town(Shop shop, String mode) {
         this.shop = shop;
         this.terrain = getNewTerrain();
-        this.toughness = toughness;
+        this.mode = mode;
 
         // the hunter gets set using the hunterArrives method, which
         // gets called from a client class
@@ -114,11 +115,11 @@ public class Town {
             printMessage += "You want trouble, stranger!  You got it!\nOof! Umph! Ow!\n";
             int goldDiff = (int) (Math.random() * 10) + 1;
             double chance = 0;
-            if (toughness == 0.25) {
+            if (mode.equals("easy")) {
                 chance = Math.random() * 1.5;
-            } else if (toughness == 0.5) {
+            } else if (mode.equals("medium")) {
                 chance = Math.random();
-            } else if (toughness == 0.75) {
+            } else if (mode.equals("hard")) {
                 chance = Math.random() * 0.5;
             }
             if (chance > Math.random()) {
@@ -198,7 +199,7 @@ public class Town {
      */
     private boolean checkItemBreak() {
         double rand = Math.random();
-        if (toughness == 0.25) {
+        if (mode.equals("easy")) {
             return false;
         }
         return (rand < 0.5);

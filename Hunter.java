@@ -195,7 +195,6 @@ public class Hunter {
                 return i;
             }
         }
-
         return -1;
     }
 
