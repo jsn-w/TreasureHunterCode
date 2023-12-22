@@ -74,8 +74,11 @@ public class Town {
         boolean canLeaveTown = terrain.canCrossTerrain(hunter);
         if (canLeaveTown) {
             String item = terrain.getNeededItem();
+            if (terrain.getTerrainName().equals("Jungle") && hunter.hasItemInKit("sword")){
+                item = Colors.RED + "Sword" + Colors.RESET;
+            }
             printMessage = "You used your " + item + " to cross the " + terrain.getTerrainName() + ".";
-            if (checkItemBreak()) {
+            if (checkItemBreak() && !item.equals(Colors.RED + "Sword" + Colors.RESET)) {
                 hunter.removeItemFromKit(item);
                 printMessage += "\nUnfortunately, your " + item + " broke.";
             }
@@ -111,25 +114,34 @@ public class Town {
         if (Math.random() > noTroubleChance) {
             printMessage = "You couldn't find any trouble";
         } else {
-            printMessage = Colors.RED;
-            printMessage += "You want trouble, stranger!  You got it!\nOof! Umph! Ow!\n";
             int goldDiff = (int) (Math.random() * 10) + 1;
-            double chance = 0;
-            if (mode.equals("easy")) {
-                chance = Math.random() * 1.5;
-            } else if (mode.equals("medium")) {
-                chance = Math.random();
-            } else if (mode.equals("hard")) {
-                chance = Math.random() * 0.5;
-            }
-            if (chance > Math.random()) {
-                printMessage += "Okay, stranger! You proved yer mettle. Here, take my gold.";
-                printMessage += "\nYou won the brawl and receive " + Colors.YELLOW + goldDiff + Colors.RESET + " gold.";
-                hunter.changeGold(goldDiff);
+            printMessage = Colors.RED;
+            if (!hunter.hasItemInKit("sword")) {
+                printMessage += "You want trouble, stranger!  You got it!\nOof! Umph! Ow!\n";
+                double chance = 0;
+                if (mode.equals("easy")) {
+                    chance = Math.random() * 1.5;
+                } else if (mode.equals("medium")) {
+                    chance = Math.random();
+                } else if (mode.equals("hard")) {
+                    chance = Math.random() * 0.5;
+                }
+                if (chance > Math.random()) {
+                    printMessage += "Okay, stranger! You proved yer mettle. Here, take my gold.";
+                    printMessage += "\nYou won the brawl and receive " + Colors.YELLOW + goldDiff + Colors.RESET + " gold.";
+                    hunter.changeGold(goldDiff);
+                } else {
+                    printMessage += "That'll teach you to go lookin' fer trouble in MY town! Now pay up!";
+                    printMessage += "\nYou lost the brawl and pay " + goldDiff + " gold.";
+                    hunter.changeGold(-goldDiff);
+                    printMessage += Colors.RESET;
+                }
             } else {
-                printMessage += "That'll teach you to go lookin' fer trouble in MY town! Now pay up!";
-                printMessage += "\nYou lost the brawl and pay " + goldDiff + " gold.";
-                hunter.changeGold(-goldDiff);
+                System.out.println("\nDude how is that even fair, you got a literal sword.");
+                System.out.println("You're actually so cringe.");
+                System.out.println("Just take my money and leave me alone!");
+                System.out.println("You got " + Colors.YELLOW + goldDiff + Colors.RESET + " gold.");
+                hunter.changeGold(goldDiff);
                 printMessage += Colors.RESET;
             }
         }

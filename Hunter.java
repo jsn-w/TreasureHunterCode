@@ -10,6 +10,7 @@ public class Hunter {
     private String[] kit;
     private String[] treasureFound;
     private int gold;
+    public static boolean isSamurai;
 
     /**
      * The base constructor of a Hunter assigns the name to the hunter and an empty kit.
@@ -22,6 +23,7 @@ public class Hunter {
         kit = new String[6];
         treasureFound = new String[4];
         gold = startingGold;
+        isSamurai = false;
     }
 
     //Accessors
@@ -56,7 +58,7 @@ public class Hunter {
      * @return true if the item is successfully bought.
      */
     public boolean buyItem(String item, int costOfItem) {
-        if (costOfItem == 0 || gold < costOfItem || hasItemInKit(item)) {
+        if ((costOfItem == 0 && !item.equals("sword")) || gold < costOfItem || hasItemInKit(item)) {
             return false;
         }
 
@@ -104,8 +106,11 @@ public class Hunter {
      * @param item The item to be added to the kit.
      * @return true if the item is not in the kit and has been added.
      */
-    private boolean addItem(String item) {
+    public boolean addItem(String item) {
         if (!hasItemInKit(item)) {
+            if (item.equals("sword")){
+                item = item;
+            }
             int idx = emptyPositionInKit();
             kit[idx] = item;
             return true;
@@ -163,7 +168,11 @@ public class Hunter {
         printableKit += Colors.PURPLE;
         for (String item : kit) {
             if (item != null) {
-                printableKit += item + space;
+                if (item.equals("sword")){
+                    printableKit += Colors.RED + "Sword" + Colors.PURPLE + space;
+                } else {
+                    printableKit += item + space;
+                }
             }
         }
         printableKit += Colors.RESET;
@@ -262,7 +271,11 @@ public class Hunter {
                 return i;
             }
         }
-
         return -1;
+    }
+
+    public void setSamurai(){
+        isSamurai = true;
+        kit = new String[8];
     }
 }

@@ -60,7 +60,12 @@ public class TreasureHunter {
         } else if (mode.equals("h")) {
             mode = "hard";
             hunter.changeGold(10);
-        } else {
+        } else if (mode.equals("s")){
+            mode = "samurai";
+            hunter.setSamurai();
+            hunter.changeGold(15);
+        }
+        else {
             mode = "test";
             hunter.changeGold(100);
         }
@@ -114,7 +119,7 @@ public class TreasureHunter {
     private void showMenu() {
         String choice = "";
 
-        while (!choice.equals("x") || !gameOver) {
+        while (!choice.equals("x") && !gameOver) {
             System.out.println();
             System.out.println(currentTown.getLatestNews());
             System.out.println("***");

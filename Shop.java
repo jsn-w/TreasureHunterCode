@@ -43,21 +43,31 @@ public class Shop {
         customer = hunter;
 
         if (buyOrSell.equals("b")) {
-            System.out.println("Welcome to the shop! We have the finest wares in town.");
-            System.out.println("Currently we have the following items:");
-            System.out.println(inventory());
-            System.out.print("What're you lookin' to buy? ");
-            String item = SCANNER.nextLine().toLowerCase();
-            int cost = checkMarketPrice(item, true);
-            if (cost == 0) {
-                System.out.println("We ain't got none of those.");
-            } else {
-                System.out.print("It'll cost you " + cost + " gold. Buy it (y/n)? ");
-                String option = SCANNER.nextLine().toLowerCase();
+            if (!hunter.hasItemInKit("sword")) {
+                System.out.println("Welcome to the shop! We have the finest wares in town.");
+                System.out.println("Currently we have the following items:");
+                System.out.println(inventory());
+                System.out.print("What're you lookin' to buy? ");
+                String item = SCANNER.nextLine().toLowerCase();
+                int cost = checkMarketPrice(item, true);
+                if (cost == 0 && !item.equals("sword")) {
+                    System.out.println("We ain't got none of those.");
+                } else {
+                    System.out.print("It'll cost you " + cost + " gold. Buy it (y/n)? ");
+                    String option = SCANNER.nextLine().toLowerCase();
 
-                if (option.equals("y")) {
-                    buyItem(item);
+                    if (option.equals("y")) {
+                        buyItem(item);
+                    }
                 }
+            } else {
+                System.out.println("Really? You're really gonna come into my shop and threaten me with my own sword?");
+                System.out.println("Whatever, feel free to take anything.");
+                System.out.println(freeShop());
+                System.out.print("Choose an item to rob: ");
+                String item = SCANNER.nextLine().toLowerCase();
+                System.out.println("The shopkeeper gave you your item for free with a rather vicious glare!");
+                hunter.addItem(item);
             }
         } else {
             System.out.println("What're you lookin' to sell? ");
@@ -91,6 +101,20 @@ public class Shop {
         str += "Boat: " + BOAT_COST + " gold\n";
         str += "Shovel: " + SHOVEL_COST + " gold\n";
         str += "Boots: " + BOOTS_COST + " gold\n";
+        if (Hunter.isSamurai){
+            str += Colors.RED + "Sword" + Colors.RESET + ": 0 gold";
+        }
+        return str;
+    }
+
+    public String freeShop(){
+        String str = "Water: 0 gold\n";
+        str += "Rope: 0 gold\n";
+        str += "Machete: 0 gold\n";
+        str += "Horse: 0 gold\n";
+        str += "Boat:  0 gold\n";
+        str += "Shovel: 0 gold\n";
+        str += "Boots: 0 gold\n";
 
         return str;
     }
