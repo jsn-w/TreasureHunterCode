@@ -120,13 +120,16 @@ public class Hunter {
     }
 
     public void addTreasure(String treasure) {
-        if (!(treasure.equals("dust") || treasure.equals("N/A"))){
-            if (findItemInKit(treasure) == -1){
-                int idx = emptyTreasure();
-                treasureFound[idx] = treasure;
-            } else {
-                System.out.println("You have already found this treasure!");
-            }
+        if (treasure.equals("gem")) {
+            treasureFound[0] = "gem";
+        } else if (treasure.equals("crown")) {
+            treasureFound[0] = "crown";
+        } else if (treasure.equals("trophy")) {
+            treasureFound[0] = "trophy";
+        }
+        if (treasureFound[0].equals("gem") && treasureFound[1].equals("crown") && treasureFound[2].equals("trophy")) {
+            System.out.println("Congratulations, you have found the last of the three treasures, you win!");
+            TreasureHunter.setGameOver();
         }
     }
 
