@@ -123,11 +123,11 @@ public class Hunter {
         if (treasure.equals("gem")) {
             treasureFound[0] = "gem";
         } else if (treasure.equals("crown")) {
-            treasureFound[0] = "crown";
+            treasureFound[1] = "crown";
         } else if (treasure.equals("trophy")) {
-            treasureFound[0] = "trophy";
+            treasureFound[2] = "trophy";
         }
-        if (treasureFound[0].equals("gem") && treasureFound[1].equals("crown") && treasureFound[2].equals("trophy")) {
+        if (!(treasureFound[0] == null || treasureFound[1] == null || treasureFound[2] == null)) {
             System.out.println("Congratulations, you have found the last of the three treasures, you win!");
             TreasureHunter.setGameOver();
         }

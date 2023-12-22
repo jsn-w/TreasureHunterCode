@@ -164,7 +164,7 @@ public class Town {
     }
 
     public String toString() {
-        return "This nice little town is surrounded by " + terrain.getTerrainName() + ".";
+        return "This nice little town is surrounded by " + Colors.CYAN + terrain.getTerrainName() + Colors.RESET + ".";
     }
 
     /**
