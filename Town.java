@@ -42,7 +42,9 @@ public class Town {
     }
 
     public String getLatestNews() {
-        return printMessage;
+        String prevMessage = printMessage;
+        printMessage = "";
+        return prevMessage;
     }
 
     public String chooseTreasure(){
@@ -77,7 +79,7 @@ public class Town {
             printMessage = "You used your " + item + " to cross the " + terrain.getTerrainName() + ".";
             if (checkItemBreak()) {
                 hunter.removeItemFromKit(item);
-                printMessage += "\nUnfortunately, your " + item + " broke.";
+                printMessage += "\nUnfortunately, you lost your " + item;
             }
 
             return true;

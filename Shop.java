@@ -75,6 +75,7 @@ public class Shop {
                 }
             }
         }
+        System.out.println("You left the shop");
     }
 
     /**
