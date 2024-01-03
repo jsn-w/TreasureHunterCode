@@ -17,6 +17,7 @@ public class Town {
     private String[] treasures = {"dust", "gem", "crown", "trophy"};
     private String treasure;
     private String mode;
+    private OutputWindow window;
 
 
     /**
@@ -25,10 +26,11 @@ public class Town {
      * @param shop The town's shoppe.
      * @param mode Mode of game.
      */
-    public Town(Shop shop, String mode) {
+    public Town(Shop shop, String mode, OutputWindow window) {
         this.shop = shop;
         this.terrain = getNewTerrain();
         this.mode = mode;
+        this.window = window;
 
         // the hunter gets set using the hunterArrives method, which
         // gets called from a client class
@@ -117,7 +119,6 @@ public class Town {
             printMessage = "You couldn't find any trouble";
         } else {
             int goldDiff = (int) (Math.random() * 10) + 1;
-            printMessage = Colors.RED;
             if (!hunter.hasItemInKit("sword")) {
                 printMessage += "You want trouble, stranger!  You got it!\nOof! Umph! Ow!\n";
                 double chance = 0;
@@ -130,21 +131,19 @@ public class Town {
                 }
                 if (chance > Math.random()) {
                     printMessage += "Okay, stranger! You proved yer mettle. Here, take my gold.";
-                    printMessage += "\nYou won the brawl and receive " + Colors.YELLOW + goldDiff + Colors.RESET + " gold.";
+                    printMessage += "\nYou won the brawl and receive " + goldDiff + " gold.";
                     hunter.changeGold(goldDiff);
                 } else {
                     printMessage += "That'll teach you to go lookin' fer trouble in MY town! Now pay up!";
                     printMessage += "\nYou lost the brawl and pay " + goldDiff + " gold.";
                     hunter.changeGold(-goldDiff);
-                    printMessage += Colors.RESET;
                 }
             } else {
                 System.out.println("\nDude how is that even fair, you got a literal sword.");
                 System.out.println("You're actually so cringe.");
                 System.out.println("Just take my money and leave me alone!");
-                System.out.println("You got " + Colors.YELLOW + goldDiff + Colors.RESET + " gold.");
+                System.out.println("You got " + goldDiff + " gold.");
                 hunter.changeGold(goldDiff);
-                printMessage += Colors.RESET;
             }
         }
     }
@@ -164,7 +163,7 @@ public class Town {
     }
 
     public String toString() {
-        return "This nice little town is surrounded by " + Colors.CYAN + terrain.getTerrainName() + Colors.RESET + ".";
+        return "This nice little town is surrounded by " + terrain.getTerrainName() + ".";
     }
 
     /**

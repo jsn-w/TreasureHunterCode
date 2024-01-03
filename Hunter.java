@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * Hunter Class<br /><br />
  * This class represents the treasure hunter character (the player) in the Treasure Hunt game.
@@ -11,6 +13,7 @@ public class Hunter {
     private String[] treasureFound;
     private int gold;
     public static boolean isSamurai;
+    private OutputWindow window;
 
     /**
      * The base constructor of a Hunter assigns the name to the hunter and an empty kit.
@@ -18,12 +21,13 @@ public class Hunter {
      * @param hunterName The hunter's name.
      * @param startingGold The gold the hunter starts with.
      */
-    public Hunter(String hunterName, int startingGold) {
+    public Hunter(String hunterName, int startingGold, OutputWindow window) {
         this.hunterName = hunterName;
         kit = new String[6];
         treasureFound = new String[4];
         gold = startingGold;
         isSamurai = false;
+        this.window = window;
     }
 
     //Accessors
@@ -46,7 +50,7 @@ public class Hunter {
             System.out.println(printMessage);
             printMessage += Colors.RESET;
             TreasureHunter.setGameOver();
-            System.out.println("\nYou lost the brawl and died from a debt of " + -gold +  " gold");
+            window.addTextToWindow("\nYou lost the brawl and died from a debt of " + -gold +  " gold", Color.red);
         }
     }
 
@@ -128,7 +132,7 @@ public class Hunter {
             treasureFound[2] = "trophy";
         }
         if (!(treasureFound[0] == null || treasureFound[1] == null || treasureFound[2] == null)) {
-            System.out.println("Congratulations, you have found the last of the three treasures, you win!");
+            window.addTextToWindow("Congratulations, you have found the last of the three treasures, you win!", Color.green);
             TreasureHunter.setGameOver();
         }
     }
@@ -151,11 +155,9 @@ public class Hunter {
     public boolean hasItemInKit(String item) {
         for (String tmpItem : kit) {
             if (item.equals(tmpItem)) {
-                // early return
                 return true;
             }
         }
-
         return false;
     }
 
@@ -168,30 +170,26 @@ public class Hunter {
     public String getInventory() {
         String printableKit = "";
         String space = " ";
-        printableKit += Colors.PURPLE;
         for (String item : kit) {
             if (item != null) {
                 if (item.equals("sword")){
-                    printableKit += Colors.RED + "Sword" + Colors.PURPLE + space;
+                    printableKit += "Sword" + space;
                 } else {
                     printableKit += item + space;
                 }
             }
         }
-        printableKit += Colors.RESET;
         return printableKit;
     }
 
     public String getTreasure() {
         String printableKit = "";
         String space = " ";
-        printableKit += Colors.YELLOW;
         for (String item : treasureFound) {
             if (item != null) {
                 printableKit += item + space;
             }
         }
-        printableKit += Colors.RESET;
         return printableKit;
     }
 
@@ -199,7 +197,7 @@ public class Hunter {
      * @return A string representation of the hunter.
      */
     public String toString() {
-        String str = hunterName + " has " + gold + Colors.YELLOW + " gold" + Colors.RESET;
+        String str = hunterName + " has " + gold + " gold";
         if (!kitIsEmpty()) {
             str += " and " + getInventory();
         }

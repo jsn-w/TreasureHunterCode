@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.Scanner;
 
 /**
@@ -15,6 +16,7 @@ public class Shop {
     private static final int BOAT_COST = 20;
     private static final int SHOVEL_COST = 8;
     private static final int BOOTS_COST = 6;
+    private OutputWindow window;
 
     // static variables
     private static final Scanner SCANNER = new Scanner(System.in);
@@ -28,9 +30,10 @@ public class Shop {
      *
      * @param markdown Percentage of markdown for selling items in decimal format.
      */
-    public Shop(double markdown) {
+    public Shop(double markdown, OutputWindow window) {
         this.markdown = markdown;
         customer = null; // is set in the enter method
+        this.window = window;
     }
 
     /**
@@ -44,16 +47,17 @@ public class Shop {
 
         if (buyOrSell.equals("b")) {
             if (!hunter.hasItemInKit("sword")) {
-                System.out.println("Welcome to the shop! We have the finest wares in town.");
-                System.out.println("Currently we have the following items:");
-                System.out.println(inventory());
-                System.out.print("What're you lookin' to buy? ");
+                window.clear();
+                window.addTextToWindow("Welcome to the shop! We have the finest wares in town.", Color.blue);
+                window.addTextToWindow("\nCurrently we have the following items: ", Color.blue);
+                window.addTextToWindow("\n" + inventory(), Color.blue);
+                window.addTextToWindow("\nWhat're you lookin' to buy? ", Color.blue);
                 String item = SCANNER.nextLine().toLowerCase();
                 int cost = checkMarketPrice(item, true);
                 if (cost == 0 && !item.equals("sword")) {
-                    System.out.println("We ain't got none of those.");
+                    window.addTextToWindow("\nWe ain't got none of those.", Color.red);
                 } else {
-                    System.out.print("It'll cost you " + cost + " gold. Buy it (y/n)? ");
+                    window.addTextToWindow("\nIt'll cost you " + cost + " gold. Buy it (y/n)? ", Color.green);
                     String option = SCANNER.nextLine().toLowerCase();
 
                     if (option.equals("y")) {
@@ -61,23 +65,23 @@ public class Shop {
                     }
                 }
             } else {
-                System.out.println("Really? You're really gonna come into my shop and threaten me with my own sword?");
-                System.out.println("Whatever, feel free to take anything.");
-                System.out.println(freeShop());
-                System.out.print("Choose an item to rob: ");
+                window.addTextToWindow("\nReally? You're really gonna come into my shop and threaten me with my own sword?", Color.red);
+                window.addTextToWindow("\nWhatever, feel free to take anything.", Color.green);
+                window.addTextToWindow("\n" + freeShop(), Color.green);
+                window.addTextToWindow("\nChoose an item to rob: ", Color.red);
                 String item = SCANNER.nextLine().toLowerCase();
-                System.out.println("The shopkeeper gave you your item for free with a rather vicious glare!");
+                window.addTextToWindow("\nThe shopkeeper gave you your item for free with a rather vicious glare!", Color.green);
                 hunter.addItem(item);
             }
         } else {
-            System.out.println("What're you lookin' to sell? ");
-            System.out.print("You currently have the following items: " + customer.getInventory());
+            window.addTextToWindow("\nWhat're you lookin' to sell? ", Color.pink);
+            window.addTextToWindow("\nYou currently have the following items: " + customer.getInventory(), Color.pink);
             String item = SCANNER.nextLine().toLowerCase();
             int cost = checkMarketPrice(item, false);
             if (cost == 0) {
-                System.out.println("We don't want none of those.");
+                window.addTextToWindow("\nWe don't want none of those.", Color.red);
             } else {
-                System.out.print("It'll get you " + cost + " gold. Sell it (y/n)? ");
+                window.addTextToWindow("\nIt'll get you " + cost + " gold. Sell it (y/n)? ", Color.green);
                 String option = SCANNER.nextLine().toLowerCase();
 
                 if (option.equals("y")) {
@@ -85,7 +89,7 @@ public class Shop {
                 }
             }
         }
-        System.out.println("You left the shop");
+        window.addTextToWindow("You left the shop", Color.green);
     }
 
     /**
@@ -103,7 +107,7 @@ public class Shop {
         str += "Shovel: " + SHOVEL_COST + " gold\n";
         str += "Boots: " + BOOTS_COST + " gold\n";
         if (Hunter.isSamurai){
-            str += Colors.RED + "Sword" + Colors.RESET + ": 0 gold";
+            str += "Sword" + ": 0 gold";
         }
         return str;
     }
@@ -128,9 +132,9 @@ public class Shop {
     public void buyItem(String item) {
         int costOfItem = checkMarketPrice(item, true);
         if (customer.buyItem(item, costOfItem)) {
-            System.out.println("Ye' got yerself a " + item + ". Come again soon.");
+            window.addTextToWindow("Ye' got yerself a " + item + ". Come again soon.", Color.green);
         } else {
-            System.out.println("Hmm, either you don't have enough gold or you've already got one of those!");
+            window.addTextToWindow("Hmm, either you don't have enough gold or you've already got one of those!", Color.red);
         }
     }
 
@@ -142,9 +146,9 @@ public class Shop {
     public void sellItem(String item) {
         int buyBackPrice = checkMarketPrice(item, false);
         if (customer.sellItem(item, buyBackPrice)) {
-            System.out.println("Pleasure doin' business with you.");
+            window.addTextToWindow("Pleasure doin' business with you.", Color.green);
         } else {
-            System.out.println("Stop stringin' me along!");
+            window.addTextToWindow("Stop stringin' me along!", Color.red);
         }
     }
 

@@ -36,16 +36,13 @@ public class Terrain {
      * @return true if the Hunter has the proper item.
      */
     public boolean canCrossTerrain(Hunter hunter) {
-        if (hunter.hasItemInKit(neededItem) || (terrainName.equals("Jungle") && hunter.hasItemInKit("sword"))) {
-            return true;
-        }
-        return false;
+        return (hunter.hasItemInKit(neededItem) || (terrainName.equals("Jungle") && hunter.hasItemInKit("sword")));
     }
 
     /**
      * @return A string representation of the terrain and item to cross it.
      */
     public String toString() {
-        return Colors.CYAN + terrainName + " needs a(n) " + neededItem + " to cross." + Colors.RESET;
+        return terrainName + " needs a(n) " + neededItem + " to cross.";
     }
 }

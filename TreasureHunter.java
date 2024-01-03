@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.Scanner;
 
 /**
@@ -17,6 +18,7 @@ public class TreasureHunter {
     private Hunter hunter;
     private String mode;
     private static boolean gameOver;
+    OutputWindow window = new OutputWindow();
 
     /**
      * Constructs the Treasure Hunter game.
@@ -41,33 +43,40 @@ public class TreasureHunter {
      * Creates a hunter object at the beginning of the game and populates the class member variable with it.
      */
     private void welcomePlayer() {
-        System.out.println("Welcome to TREASURE HUNTER!");
-        System.out.println("Going hunting for the big treasure, eh?");
-        System.out.print("What's your name, Hunter? ");
+        Color pink = Color.pink;
+        window.clear();
+        window.addTextToWindow("Welcome to TREASURE HUNTER!", pink);
+        window.addTextToWindow("\nGoing hunting for the big treasure, eh?", pink);
+        window.addTextToWindow("\n\nWhat's your name, Hunter? ", pink);
         String name = SCANNER.nextLine().toLowerCase();
 
         // set hunter instance variable
-        hunter = new Hunter(name, 0);
+        hunter = new Hunter(name, 0, window);
 
-        System.out.print("(E)asy, (N)ormal, or (H)ard mode:");
+        window.addTextToWindow("\n(E)asy, (N)ormal, or (H)ard mode:", Color.blue);
         mode = SCANNER.nextLine().toLowerCase();
-        if (mode.equals("e")) {
-            mode = "easy";
-            hunter.changeGold(25);
-        } else if (mode.equals("n")){
-            mode = "normal";
-            hunter.changeGold(15);
-        } else if (mode.equals("h")) {
-            mode = "hard";
-            hunter.changeGold(10);
-        } else if (mode.equals("s")){
-            mode = "samurai";
-            hunter.setSamurai();
-            hunter.changeGold(15);
-        }
-        else {
-            mode = "test";
-            hunter.changeGold(100);
+        switch (mode) {
+            case "e" -> {
+                mode = "easy";
+                hunter.changeGold(25);
+            }
+            case "n" -> {
+                mode = "normal";
+                hunter.changeGold(15);
+            }
+            case "h" -> {
+                mode = "hard";
+                hunter.changeGold(10);
+            }
+            case "s" -> {
+                mode = "samurai";
+                hunter.setSamurai();
+                hunter.changeGold(15);
+            }
+            default -> {
+                mode = "test";
+                hunter.changeGold(100);
+            }
         }
     }
 
@@ -77,32 +86,37 @@ public class TreasureHunter {
     private void enterTown() {
         double markdown = 0.25;
         double toughness = 0.4;
-        if (mode.equals("easy")) {
-            markdown = 1;
-            toughness = 0.25;
-            hunter.changeGold(20);
-        } else if (mode.equals("medium")) {
-            markdown = 0.5;
-            toughness = 0.5;
-            hunter.changeGold(15);
-        } else if (mode.equals("hard")) {
-            markdown = 0.25;
-            toughness = 0.75;
-            hunter.changeGold(10);
-        } else if (mode.equals("test")){
-            hunter.changeGold(100);
-            hunter.addAll();
+        switch (mode) {
+            case "easy" -> {
+                markdown = 1;
+                toughness = 0.25;
+                hunter.changeGold(20);
+            }
+            case "medium" -> {
+                markdown = 0.5;
+                toughness = 0.5;
+                hunter.changeGold(15);
+            }
+            case "hard" -> {
+                markdown = 0.25;
+                toughness = 0.75;
+                hunter.changeGold(10);
+            }
+            case "test" -> {
+                hunter.changeGold(100);
+                hunter.addAll();
+            }
         }
 
         // note that we don't need to access the Shop object
         // outside of this method, so it isn't necessary to store it as an instance
         // variable; we can leave it as a local variable
-        Shop shop = new Shop(markdown);
+        Shop shop = new Shop(markdown, window);
 
         // creating the new Town -- which we need to store as an instance
         // variable in this class, since we need to access the Town
         // object in other methods of this class
-        currentTown = new Town(shop, mode);
+        currentTown = new Town(shop, mode, window);
 
         // calling the hunterArrives method, which takes the Hunter
         // as a parameter; note this also could have been done in the
@@ -120,20 +134,19 @@ public class TreasureHunter {
         String choice = "";
 
         while (!choice.equals("x") && !gameOver) {
-            System.out.println();
-            System.out.println(currentTown.getLatestNews());
-            System.out.println("***");
-            System.out.println(hunter);
-            System.out.println(currentTown);
-            System.out.println("(B)uy something at the shop.");
-            System.out.println("(S)ell something at the shop.");
-            System.out.println("(M)ove on to a different town.");
-            System.out.println("(L)ook for trouble!");
-            System.out.println("(D)ig for gold");
-            System.out.println("(H)unt for treasure");
-            System.out.println("Give up the hunt and e(X)it.");
-            System.out.println();
-            System.out.print("What's your next move? ");
+            window.clear();
+            window.addTextToWindow(currentTown.getLatestNews(), Color.red);
+            window.addTextToWindow("\n***", Color.blue);
+            window.addTextToWindow("\n" + String.valueOf(hunter), Color.blue);
+            window.addTextToWindow("\n" + String.valueOf(currentTown), Color.blue);
+            window.addTextToWindow("\n(B)uy something at the shop.", Color.blue);
+            window.addTextToWindow("\n(S)ell something at the shop.", Color.blue);
+            window.addTextToWindow("\n(M)ove on to a different town.", Color.blue);
+            window.addTextToWindow("\n(L)ook for trouble!", Color.blue);
+            window.addTextToWindow("\n(D)ig for gold", Color.blue);
+            window.addTextToWindow("\n(H)unt for treasure", Color.blue);
+            window.addTextToWindow("\nGive up the hunt and e(X)it.", Color.blue);
+            window.addTextToWindow("\n\nWhat's your next move? ", Color.blue);
             choice = SCANNER.nextLine().toLowerCase();
             processChoice(choice);
         }
@@ -157,11 +170,12 @@ public class TreasureHunter {
         } else if (choice.equals("d")) {
             currentTown.digForGold();
         } else if (choice.equals("x")) {
-            System.out.println("Fare thee well, " + hunter.getHunterName() + "!");
+            window.clear();
+            window.addTextToWindow("Fare thee well, " + hunter.getHunterName() + "!", Color.blue);
         } else if (choice.equals("h")){
             hunter.addTreasure(currentTown.searchTreasure());
         } else {
-            System.out.println("Yikes! That's an invalid option! Try again.");
+            window.addTextToWindow("\nYikes! That's an invalid option! Try again.", Color.red);
         }
     }
 
